@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "NAJAapp",
-    "slug": "NAJAapp",
+    "slug": "Stock Management",
     "platforms": [
       "ios",
       "android",
