@@ -3,7 +3,7 @@ import { View, Text, StyleSheet } from 'react-native';
 
 export default function Home() {
   return (
-    <View styles={styles.container}>
+    <View style={styles.container}>
       <Text>
         Example Home Page
       </Text>
@@ -14,6 +14,7 @@ export default function Home() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
