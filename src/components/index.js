@@ -6,7 +6,8 @@ import {
 
 import Header from './Header';
 import FloatButton from './FloatButton';
+import RegisterCategory from './RegisterCategory';
 
 export {
-  Container, Badge, Card, Text, Button, Header, FloatButton,
+  Container, Badge, Card, Text, Button, Header, FloatButton, RegisterCategory,
 };
