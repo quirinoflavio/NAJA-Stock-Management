@@ -24,13 +24,13 @@ export default function FloatButton(props) {
 
 const styles = StyleSheet.create({
   image: {
-    height: 80,
-    width: 80,
+    height: 70,
+    width: 70,
   },
   floatButton: {
+    backgroundColor: 'transparent',
     position: 'absolute',
     right: 20,
-    bottom: 40,
-    borderRadius: 50,
+    bottom: 50,
   },
 });
