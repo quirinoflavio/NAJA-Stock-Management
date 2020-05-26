@@ -5,7 +5,9 @@ import { Button } from '../Base';
 const actionIcon = require('../../assets/images/actionButton.png');
 
 export default function FloatButton(props) {
-  const { handlePress } = props;
+  const { handlePress, hide } = props;
+
+  if (hide) return null;
 
   return (
     <Button
