@@ -27,6 +27,13 @@ function update(collection, name, data) {
     .then((res) => console.log(res));
 }
 
+function updateCat(category, product) {
+  db.collection('category').doc(category)
+    .update({
+      products: firebase.firestore.FieldValue.arrayUnion(product),
+    });
+}
+
 function get(collection, name) {
   if (name) {
     return db.collection(collection).doc(name).get()
@@ -48,5 +55,5 @@ async function uploadImage(path, name, blob) {
 }
 
 export {
-  submit, remove, update, get, uploadImage,
+  submit, remove, update, get, uploadImage, updateCat,
 };
