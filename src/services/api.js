@@ -27,4 +27,11 @@ function update(collection, name, data) {
     .then((res) => console.log(res));
 }
 
-export { submit, remove, update };
+async function uploadImage(path, name, blob) {
+  const ref = firebase.storage().ref().child(`${path}/${name}`);
+  return ref.put(blob);
+}
+
+export {
+  submit, remove, update, uploadImage,
+};
