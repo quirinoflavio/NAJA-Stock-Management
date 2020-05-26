@@ -7,10 +7,10 @@ import {
   ScrollView,
   Image,
 } from 'react-native';
-// import * as mocks from '../constants/mock';
+import { submit, get } from '../services/api';
 import { theme } from '../constants';
 import {
-  Container, Text, Badge, Card, Header, FloatButton,
+  Container, Text, Badge, Card, Header, FloatButton, RegisterCategory,
 } from '../components';
 
 const { width } = Dimensions.get('window');
@@ -19,11 +19,30 @@ const { width } = Dimensions.get('window');
 export default function Category() {
   const navigation = useNavigation();
   const [categories, setCategories] = useState([]);
+  const [visible, setVisible] = useState(false);
+
+  function model(name) { return { name, products: [] }; }
+
+  function showModal() { setVisible(true); }
+  function hideModal() { setVisible(false); }
+  function handleSubmit(name) {
+    submit('category', model(name));
+    fetchData();
+  }
 
   async function fetchData() {
-    const mocked = [];
-    // const mocked = mocks.categories;
-    return setCategories(mocked);
+    const data = await get('category');
+    const filter = [];
+    data.forEach((cat) => {
+      const newCat = {
+        id: cat.id,
+        name: cat.data.name,
+        image: require('../assets/images/warehouse.png'),
+        count: cat.data.products.length,
+      };
+      filter.push(newCat);
+    });
+    setCategories(filter);
   }
 
 
@@ -34,7 +53,6 @@ export default function Category() {
   return (
     <Container color={theme.colors.white}>
       <Header />
-
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ paddingVertical: theme.sizes.base * 2 }}
@@ -61,7 +79,8 @@ export default function Category() {
         </Container>
       </ScrollView>
 
-      <FloatButton handlePress={() => console.log('Add Category Clicked')} />
+      <RegisterCategory visible={visible} onHide={hideModal} onSubmit={handleSubmit} />
+      <FloatButton hide={visible} handlePress={showModal} />
     </Container>
   );
 }
