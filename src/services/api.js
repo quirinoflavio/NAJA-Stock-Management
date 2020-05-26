@@ -42,6 +42,11 @@ function get(collection, name) {
   });
 }
 
+async function uploadImage(path, name, blob) {
+  const ref = firebase.storage().ref().child(`${path}/${name}`);
+  return ref.put(blob);
+}
+
 export {
-  submit, remove, update, get,
+  submit, remove, update, get, UploadImage,
 };
