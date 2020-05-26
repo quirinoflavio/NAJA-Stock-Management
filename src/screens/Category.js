@@ -6,11 +6,12 @@ import {
   Dimensions,
   ScrollView,
   Image,
+  Alert,
 } from 'react-native';
-import { submit, get } from '../services/api';
+import { submit, get, remove } from '../services/api';
 import { theme } from '../constants';
 import {
-  Container, Text, Badge, Card, Header, FloatButton, RegisterCategory,
+  Container, Text, Badge, Card, Header, FloatButton, RegisterCategory, Button,
 } from '../components';
 
 const { width } = Dimensions.get('window');
@@ -27,6 +28,10 @@ export default function Category() {
   function hideModal() { setVisible(false); }
   function handleSubmit(name) {
     submit('category', model(name));
+    fetchData();
+  }
+  function handleDelete(name) {
+    remove('category', name);
     fetchData();
   }
 
@@ -50,6 +55,7 @@ export default function Category() {
     fetchData();
   }, []);
 
+
   return (
     <Container color={theme.colors.white}>
       <Header />
@@ -59,22 +65,46 @@ export default function Category() {
       >
         <Container flex={false} row space="between" style={styles.categories}>
           {categories.map((category) => (
-            <TouchableOpacity
-              key={category.name}
-              onPress={() => navigation.navigate('Products', { categoryName: category.name })}
-            >
-              <Card center middle shadow style={styles.category}>
-                <Badge margin={[0, 0, 15]} size={50}>
-                  <Image style={styles.icon} source={category.image} />
-                </Badge>
-                <Text numberOfLines={1} medium height={20}>
-                  {category.name}
-                </Text>
-                <Text gray caption>
-                  {`${category.count} products`}
-                </Text>
-              </Card>
-            </TouchableOpacity>
+            <>
+
+              <TouchableOpacity
+                key={category.name}
+                onPress={() => navigation.navigate('Products', { categoryName: category.name })}
+              >
+                <Card center middle shadow style={styles.category}>
+                  <Button
+                    style={styles.options}
+                    onPress={() => (
+                      Alert.alert(
+                        `Deseja realmente apagar "${category.name}"?`,
+                        'Essa operação não pode ser desfeita.',
+                        [
+                          {
+                            text: 'Cancel',
+                            onPress: () => console.log('Cancel Pressed'),
+                            style: 'cancel',
+                          },
+                          { text: 'OK', onPress: () => handleDelete(category.name) },
+                        ],
+                        { cancelable: false },
+                      )
+                    )}
+                  >
+                    <Image style={styles.delete} source={require('../assets/images/trash.png')} />
+
+                  </Button>
+                  <Badge margin={[-theme.sizes.padding, 0, 15]} size={50}>
+                    <Image style={styles.icon} source={category.image} />
+                  </Badge>
+                  <Text numberOfLines={1} medium height={20}>
+                    {category.name}
+                  </Text>
+                  <Text gray caption>
+                    {`${category.count} products`}
+                  </Text>
+                </Card>
+              </TouchableOpacity>
+            </>
           ))}
         </Container>
       </ScrollView>
@@ -101,5 +131,17 @@ const styles = StyleSheet.create({
   icon: {
     width: theme.sizes.base * 2.4,
     height: theme.sizes.base * 2.4,
+  },
+  options: {
+    marginLeft: 'auto',
+    marginTop: -theme.sizes.base + 5, // default card padding
+    paddingHorizontal: 5,
+    height: 30,
+    marginRight: -theme.sizes.base, // Default card padding
+  },
+  delete: {
+    opacity: 0.8,
+    height: 20,
+    width: 20,
   },
 });
