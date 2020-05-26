@@ -4,7 +4,7 @@ import { StyleSheet, Image } from 'react-native';
 import { Modal, TextInput } from 'react-native-paper';
 import { Container, Text, Button } from '../Base';
 import { theme } from '../../constants';
-import { randomImageName } from '../../utils';
+import randomImageName from '../../utils';
 import { uploadImage } from '../../services/api';
 
 

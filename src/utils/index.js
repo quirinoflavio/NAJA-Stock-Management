@@ -1,4 +1,4 @@
-export function randomImageName(length, ext) {
+export default function randomImageName(length, ext) {
   const characters = 'abcdefghijklmnopqrstuvwxyz0123456789';
   let string = '';
   const max = characters.length - 1;
