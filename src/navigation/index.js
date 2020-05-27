@@ -9,12 +9,18 @@ import Login from '../screens/Login';
 import Loading from '../screens/Loading';
 import Profile from '../screens/Profile';
 
+import Product from '../components/Product/index';
+import Products from '../components/Products/index';
+import ProductEdition from '../components/ProductEdition/index';
+
+
 const Stack = createStackNavigator();
 
 export default function Routes() {
   const [loggedIn, setLoggedIn] = useState(false);
   auth().onAuthStateChanged((user) => setLoggedIn(!!user));
   return (
+
 
     <NavigationContainer>
       <Stack.Navigator>
