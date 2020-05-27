@@ -73,4 +73,9 @@ function signOut() {
   auth().signOut();
 }
 
-export { signInWithGoogleAsync, signOut };
+function currentUser() {
+  const user = auth().currentUser;
+  return user ? { name: user.displayName, email: user.email, photoURL: user.photoURL } : undefined;
+}
+
+export { signInWithGoogleAsync, signOut, currentUser };

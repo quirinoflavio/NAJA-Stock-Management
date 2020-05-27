@@ -55,5 +55,5 @@ async function uploadImage(path, name, blob) {
 }
 
 export {
-  submit, remove, update, get, uploadImage,
+  submit, remove, update, get, uploadImage, updateCat,
 };
