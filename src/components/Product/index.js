@@ -9,10 +9,11 @@ import {
   Text,
 } from 'react-native';
 import {Dialog, ScrollView, Card, DefaultTheme, Modal, Portal, Button, Provider, Avatar } from 'react-native-paper';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation , useRoute} from '@react-navigation/native';
 import Constants from 'expo-constants';
 import { Feather } from '@expo/vector-icons';
-import logoImg from '../../assets/icon.png';
+import logoImg from '../../assets/images/warehouse.png';
+import {get, remove, update} from '../../services/api';
 
 
 
@@ -20,6 +21,10 @@ import logoImg from '../../assets/icon.png';
 export default function Product(){
 
 const navigation = useNavigation();
+
+const route = useRoute();
+
+const product = route.params.product;
 
 function navigateToProducts (){
     navigation.navigate('Products')
@@ -46,27 +51,34 @@ function navigateToProductEdition (){
 
         <View style={styles.imageProduto}>
             <Card>
-                <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
+                <Card.Cover source={{ uri: product.ImgUri }} />
             </Card>
         </View>
 
         <View style={styles.titleProduct}>
-            <Text style={styles.productNome}>Celular Samsung</Text>
+            <Text style={styles.productNome}>{product.name}</Text>
+        </View>
+
+        <View style={styles.titleDescription}>
+            <Text style={styles.productDescription}>{product.description}</Text>
         </View>
 
         <View style={styles.product}>
-            <Text style={styles.productPreco}>Preço: R$ 2.000</Text>
-            <Text style={styles.productQuantidade}>Quantidade: 23</Text>
+            <Text style={styles.productPreco}>Praço: {product.price}</Text>
+            <Text style={styles.productQuantidade}>Quantidade: {product.quantity}</Text>
         </View>
 
     </View>
 
     <View style={styles.editionArea}>
 
-        <Button icon="lead-pencil" color="#77C9D4" mode="outlined" onPress={navigateToProductEdition}>
+        <Button icon="lead-pencil" color="#77C9D4" mode="outlined" onPress={() => navigateToProductEdition(product)}>
             editar produto
         </Button>
-        <Button icon="trash-can-outline" color= "#ff6666" mode="outlined" onPress={() => console.log('Pressed')}>
+        <Button icon="trash-can-outline" color= "#ff6666" mode="outlined" onPress={() => {
+          remove("products", product);
+          navigateToProducts;
+        }}>
             excluir produto
         </Button>
 
@@ -133,8 +145,20 @@ const styles = StyleSheet.create({
         
       },
       editionArea:{
-        paddingTop: 20,
+        paddingTop: 5 ,
         padding: 5
+      },
+      titleDescription: {
+        padding: 15,
+        borderRadius: 10,
+        backgroundColor: "#ffffff",
+        marginBottom: 5,
+        justifyContent: 'center',
+        alignItems: 'flex-start'
+      },
+      productDescription: {
+        fontSize: 14,
+        color: "#262626",
       }
 
 

@@ -1,13 +1,14 @@
 import React, { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
+
 import {DefaultTheme, Provider as PaperProvider, Text, Button, Avatar, StyleSheet } from 'react-native-paper';
 
 
 
 import { signInWithGoogleAsync } from '../services/auth';
 
-const entrar = signInWithGoogleAsync();
+
 
 const theme = {
   ...DefaultTheme,
@@ -31,7 +32,7 @@ export default function Login() {
   return (
     <PaperProvider theme={theme} middle>    
    <Button  icon="google" mode="outlined" style={{marginTop: 240, justifyContent: 'center',
-      alignItems: 'center'}} onPress={entrar}>
+      alignItems: 'center'}} onPress={signInWithGoogleAsync()}>
    Login with Google
    </Button>
  </PaperProvider>

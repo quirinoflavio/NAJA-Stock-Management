@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Image,
@@ -11,16 +11,43 @@ import {
 import {useNavigation} from '@react-navigation/native';
 import Constants from 'expo-constants';
 import { Feather } from '@expo/vector-icons';
-import logoImg from '../../assets/icon.png';
+import logoImg from '../../assets/images/trash.png';
+import {get, remove, update} from '../../services/api';
 
+
+const cor = 'ff9999';
 export default function Products(){
   const navigation = useNavigation();
+  
+  const [product, setProducts] = useState([]);
 
-  function navigateToProduct (){
-    navigation.navigate('Product')
+  function mudarCor(quantidade) {
+    if(quantidade <= 10 && quantidade > 0){
+      this.cor = '#77C9D4'
+    }else if(quantidade == 0){
+      this.cor = 'ff9999'
+    }else{
+      this.cor = '#ffffff'
+    }
+  }
+  
+  function navigateToProduct (product){
+    navigation.navigate('Product', { product })
   }
 
+  async function loadProducts(){
+      const response = await get("products");
+      setProducts(response.data);
+  }
+
+
+
+  useEffect(() => {
+    loadProducts();
+  })
+
   return (
+
     <View style={styles.container}>
       <View style={styles.header}>
         <Image source={logoImg} />
@@ -37,15 +64,15 @@ export default function Products(){
       </Text>
 
       <FlatList style={styles.productList}
-     data = {[1,2,3,4,5,6,7,8,9,10]}
-     keyExtractor= {product => String(product)}
-     renderItem ={() => ( 
+     data = {product}
+     keyExtractor= {product => String(product.id)}
+     renderItem ={({item : product}) => ( 
        <View style={styles.product}>
 
-         <Text style={styles.productNome}>Celular Samsung</Text>
-         <Text style={styles.productQuantidade}>23</Text>
+         <Text style={styles.productNome}>{product.name}</Text>
+         <Text style={styles.productQuantidade}>{product.quantity}</Text>
 
-         <TouchableOpacity style={styles.buttonMore} onPress= {navigateToProduct} >
+         <TouchableOpacity style={styles.buttonMore} onPress= {() => navigateToProduct(product)} >
            <Feather name= "arrow-up-right" size ={20} color="#77C9D4"/>
        </TouchableOpacity>
 
@@ -99,7 +126,7 @@ const styles = StyleSheet.create({
   product: {
     padding: 10,
     borderRadius: 10,
-    backgroundColor: "#ffffff",
+    backgroundColor: '#FFF',
     marginBottom: 5,
     flexDirection: 'row',
     justifyContent: 'space-between',
